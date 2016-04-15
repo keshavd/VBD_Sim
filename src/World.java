@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Calendar;
+import java.util.Random;
 
 /*
  *	This file is part of DiseaseSim version 0.3 -  an agent based modeling research tool	*
@@ -102,7 +103,7 @@ public class World {
 	 * @param averageMosquitoDensity a number representing the mosquito density in the environment
 	 * @param averageHumanDensity a number representing the human density in the environment
 	 */
-	public World(int rows, int cols, double timeStepSeconds, double averageMosquitoDensity, double averageHumanDensity){
+	public World(int rows, int cols, double timeStepSeconds, double averageMosquitoDensity, double averageHumanDensity, double genderRatio){
 		this.timeStepSeconds = timeStepSeconds;
 		
 		lattice = new Environment[rows][cols];
@@ -112,8 +113,14 @@ public class World {
 				lattice[i][j] = new Environment(i,j,averageMosquitoDensity);
 				for(int numHumans = samplePoisson(averageHumanDensity); numHumans > 0; numHumans--)
 				{
-					Human resident = new Human(i,j);
-					lattice[i][j].enter(resident);
+					if (new Random().nextDouble()<=genderRatio){
+						Human resident = new Human(i,j,"male");
+						lattice[i][j].enter(resident);
+					}else{
+						Human resident = new Human(i,j,"female");
+						lattice[i][j].enter(resident);
+					}
+					
 				}
 			}
 		}

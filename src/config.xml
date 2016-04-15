@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<World>
+		<input>
+			<rows type="int">50</rows>
+			<cols type="int">50</cols>
+			<timeStepSeconds type="double">3600.0</timeStepSeconds>
+			<averageMosquitoDensity type="double">0.5</averageMosquitoDensity>
+			<averageHumanDensity type="double">2</averageHumanDensity>
+			<genderRatio type="double">0.5</genderRatio>
+			<innateResistanceRatio type="double">0.01</innateResistanceRatio>
+		</input>
+	</World>
+	<Disease>
+		<input>
+			<strain type="string">"ACTG"</strain>
+		</input>
+	</Disease>
+</config>

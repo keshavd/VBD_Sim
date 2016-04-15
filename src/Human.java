@@ -29,6 +29,8 @@ import java.util.Calendar;
 public class Human extends Agent {
 	int homeRow;
 	int homeCol;
+	String gender;
+	
 	
 	public static final String type = "HUMAN";
 	public static final double infectious_period =604800; //7*3600*24 = 604800
@@ -43,6 +45,13 @@ public class Human extends Agent {
 		super(type, homeRow, homeCol);
 		this.homeRow = homeRow;
 		this.homeCol = homeCol;
+		gender = "NA";
+	}
+	public Human(int homeRow, int homeCol, String gender){
+		super(type, homeRow, homeCol);
+		this.homeRow = homeRow;
+		this.homeCol = homeCol;
+		this.gender = gender;
 		
 	}
 

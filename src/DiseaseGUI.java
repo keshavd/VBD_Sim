@@ -11,6 +11,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.io.IOException;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +21,20 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JFileChooser;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /*
  *	This file is part of DiseaseSim version 0.3 -  an agent based modeling research tool	*
@@ -96,7 +112,53 @@ public class DiseaseGUI extends JPanel implements ActionListener{
 	 * your typical main function
 	 * @param args currently ignored
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, TransformerException, XPathExpressionException {
+		
+		// Create Factory, DocumentBuilder and JFileChooser
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+		final JFileChooser fc = new JFileChooser();
+		
+		//Opens the File Selection Dialog Box
+		int returnVal = fc.showOpenDialog(null);
+		
+		//Retrieves the XML's location
+		String filename = fc.getSelectedFile().getAbsolutePath();
+		
+		//Parses the XML Document
+		Document document = docBuilder.parse(filename);
+		
+		/*
+		 * PARSE XML CONFIG FILE INTO CONSTRUCTOR VARIABLES via XPath
+		 */
+		
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		
+		//ROWS
+		String expression = "/config/World/input/rows";
+		Node widgetNode = (Node) xpath.evaluate(expression, document, XPathConstants.NODE);
+		int rows = Integer.parseInt(widgetNode.getTextContent());
+		//COLS
+		expression = "/config/World/input/cols";
+		widgetNode = (Node) xpath.evaluate(expression, document, XPathConstants.NODE);
+		int cols = Integer.parseInt(widgetNode.getTextContent());
+		//timeStepSeconds
+		expression = "/config/World/input/timeStepSeconds";
+		widgetNode = (Node) xpath.evaluate(expression, document, XPathConstants.NODE);
+		double timeStepSeconds = Double.parseDouble(widgetNode.getTextContent());
+		//averageMosquitoDensity
+		expression = "/config/World/input/averageMosquitoDensity";
+		widgetNode = (Node) xpath.evaluate(expression, document, XPathConstants.NODE);
+		double averageMosquitoDensity = Double.parseDouble(widgetNode.getTextContent());		
+		//averageHumanDensity
+		expression = "/config/World/input/averageHumanDensity";
+		widgetNode = (Node) xpath.evaluate(expression, document, XPathConstants.NODE);
+		double averageHumanDensity = Double.parseDouble(widgetNode.getTextContent());
+		//gender
+		expression = "/config/World/input/genderRatio";
+		widgetNode = (Node) xpath.evaluate(expression, document, XPathConstants.NODE);
+		double genderRatio = Double.parseDouble(widgetNode.getTextContent());
+	
 		
 		/* Use an appropriate Look and Feel */
         try {
@@ -120,7 +182,7 @@ public class DiseaseGUI extends JPanel implements ActionListener{
             }
         });
         
-        theWorld = new World(50, 50, 3600.0, 0.5, 2);
+        theWorld = new World(rows, cols, timeStepSeconds, averageMosquitoDensity, averageHumanDensity, genderRatio);
 		//add one or more infected agents
 		Environment groundZero = World.getRandomLocation();
 		Disease newInfection = new Disease("ACGT");

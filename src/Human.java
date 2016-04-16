@@ -45,7 +45,7 @@ public class Human extends Agent {
 		super(type, homeRow, homeCol);
 		this.homeRow = homeRow;
 		this.homeCol = homeCol;
-		gender = "NA";
+		this.gender = "NA";
 	}
 	public Human(int homeRow, int homeCol, String gender){
 		super(type, homeRow, homeCol);
